@@ -1,17 +1,73 @@
 <%- include('partials/header') %>
-<div style="background:#fff;border-bottom:1px solid #e5e7eb;padding:20px 32px;position:sticky;top:0;z-index:20"><h1 style="font-size:22px;font-weight:700;color:#1e293b;margin:0">By Division</h1><p style="font-size:13px;color:#94a3b8;margin:4px 0 0">Select filters to drill down to divisions</p></div>
-<div style="padding:24px 32px 0"><div class="filter-box"><div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:16px;align-items:end">
-<div><div class="filter-label">School</div><select id="fSch" onchange="ldPr()" class="f-select"><option value="">Select School</option></select></div>
-<div><div class="filter-label">Program</div><select id="fPr" onchange="ldCo()" class="f-select" disabled><option value="">Select Program</option></select></div>
-<div><div class="filter-label">Cohort</div><select id="fCo" onchange="ldDv()" class="f-select" disabled><option value="">Select Cohort</option></select></div>
-<div><div class="filter-label">Division</div><select id="fDv" onchange="goDv()" class="f-select" disabled><option value="">Select Division</option></select></div>
-<div><button onclick="location.reload()" class="clear-btn">Clear</button></div>
-</div></div></div>
+
+<!-- Top Bar -->
+<div class="top-bar">
+  <div>
+    <h1>By Division</h1>
+    <p class="subtitle">Select filters to drill down to divisions</p>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <span style="font-size:11px;font-weight:500;color:#94a3b8;padding:5px 12px;border-radius:8px;background:#f1f5f9;border:1px solid #e2e8f0">
+      <svg width="12" height="12" fill="none" stroke="#94a3b8" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:-2px;margin-right:3px"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+      Division View
+    </span>
+  </div>
+</div>
+
+<!-- Filters -->
+<div style="padding:24px 32px 0">
+  <div class="filter-box">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+      <svg width="16" height="16" fill="none" stroke="#64748b" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+      <span style="font-size:13px;font-weight:600;color:#475569">Select Filters</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:16px;align-items:end">
+      <div>
+        <div class="filter-label">School</div>
+        <select id="fSch" onchange="ldPr()" class="f-select"><option value="">Select School</option></select>
+      </div>
+      <div>
+        <div class="filter-label">Program</div>
+        <select id="fPr" onchange="ldCo()" class="f-select" disabled><option value="">Select Program</option></select>
+      </div>
+      <div>
+        <div class="filter-label">Cohort</div>
+        <select id="fCo" onchange="ldDv()" class="f-select" disabled><option value="">Select Cohort</option></select>
+      </div>
+      <div>
+        <div class="filter-label">Division</div>
+        <select id="fDv" onchange="goDv()" class="f-select" disabled><option value="">Select Division</option></select>
+      </div>
+      <div><button onclick="location.reload()" class="clear-btn">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:-2px;margin-right:4px"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        Reset
+      </button></div>
+    </div>
+  </div>
+</div>
+
 <input type="hidden" id="fAY" value="">
-<div style="padding:20px 32px 40px" id="content"><div style="text-align:center;padding:100px 0"><div style="width:56px;height:56px;border-radius:16px;background:#f1f5f9;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><svg width="28" height="28" fill="none" stroke="#cbd5e1" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg></div><p style="color:#94a3b8;font-size:13px">Select School → Program → Cohort to view divisions</p></div></div>
+
+<!-- Content Area -->
+<div style="padding:20px 32px 40px" id="content">
+  <div class="empty-state">
+    <div class="empty-state-icon">
+      <svg width="28" height="28" fill="none" stroke="#cbd5e1" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+    </div>
+    <p style="color:#94a3b8;font-size:14px;font-weight:500;margin-bottom:4px">No division selected</p>
+    <p style="color:#cbd5e1;font-size:12px">Select School → Program → Cohort to view divisions</p>
+  </div>
+</div>
+
 <script>
 document.getElementById('nav-divisions').classList.add('active');
-const C=[{border:'#10b981',bg:'#ecfdf5',text:'#059669'},{border:'#06b6d4',bg:'#ecfeff',text:'#0891b2'},{border:'#8b5cf6',bg:'#f5f3ff',text:'#7c3aed'},{border:'#f59e0b',bg:'#fffbeb',text:'#d97706'},{border:'#ec4899',bg:'#fdf2f8',text:'#db2777'}];
+const C=[
+  {border:'#10b981',bg:'#ecfdf5',text:'#059669'},
+  {border:'#3b82f6',bg:'#eff6ff',text:'#2563eb'},
+  {border:'#8b5cf6',bg:'#f5f3ff',text:'#7c3aed'},
+  {border:'#f59e0b',bg:'#fffbeb',text:'#d97706'},
+  {border:'#ec4899',bg:'#fdf2f8',text:'#db2777'},
+];
 const gc=i=>C[i%C.length];
 async function af(u){const ay=document.getElementById('fAY').value;const s=u.includes('?')?'&':'?';return(await(await fetch('/api/'+u+s+'academic_year_id='+ay)).json()).data;}
 async function init(){const[ac,sc]=await Promise.all([af('filters/academic-years'),af('filters/schools')]);if(ac.length)document.getElementById('fAY').value=ac[ac.length-1].academic_year_id;document.getElementById('fSch').innerHTML='<option value="">Select School</option>'+sc.map(s=>'<option value="'+s.school_id+'">'+s.school_name+'</option>').join('');}
@@ -19,8 +75,8 @@ function rst(f){if(f==='prog'){document.getElementById('fPr').innerHTML='<option
 async function ldPr(){rst('prog');const sid=document.getElementById('fSch').value;if(!sid)return;const pr=await af('filters/programs/'+sid);const p=document.getElementById('fPr');p.innerHTML='<option value="">Select Program</option>'+pr.map(x=>'<option value="'+x.program_id+'">'+x.program_name+'</option>').join('');p.disabled=false;}
 async function ldCo(){rst('cohort');const sid=document.getElementById('fSch').value,pid=document.getElementById('fPr').value;if(!pid)return;const co=await af('filters/cohorts/'+sid+'/'+pid);const c=document.getElementById('fCo');c.innerHTML='<option value="">Select Cohort</option>'+co.map(x=>'<option value="'+x.cluster_id+'">'+x.cluster_name+'</option>').join('');c.disabled=false;}
 async function ldDv(){document.getElementById('fDv').innerHTML='<option value="">Select Division</option>';document.getElementById('fDv').disabled=true;const cid=document.getElementById('fCo').value;if(!cid)return;const cls=await af('classes/'+cid);document.getElementById('fDv').innerHTML='<option value="">Select Division</option>'+cls.map(x=>'<option value="'+x.st_class_id+'">'+x.st_class_name+' ('+x.cnt+')</option>').join('');document.getElementById('fDv').disabled=false;
-const a=document.getElementById('content');if(!cls.length){a.innerHTML='<p style="text-align:center;padding:80px 0;color:#94a3b8;font-size:13px">No divisions</p>';return;}
-a.innerHTML='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">'+cls.map((cl,i)=>{const c=gc(i);return'<div class="s-card fade-up" onclick="goSt('+cl.st_class_id+',\''+encodeURIComponent(cl.st_class_name)+'\')" style="border-left-color:'+c.border+';animation-delay:'+i*60+'ms"><div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px"><div class="icon-box" style="background:'+c.bg+';color:'+c.text+'">'+(cl.st_class_code||'D')+'</div><span class="cnt-badge" style="background:'+c.bg+';color:'+c.text+'">'+cl.cnt.toLocaleString()+' students</span></div><div style="font-size:15px;font-weight:600;color:#1e293b;margin-bottom:4px">'+cl.st_class_name+'</div><div style="font-size:12px;color:#94a3b8">View students →</div></div>';}).join('')+'</div>';}
+const a=document.getElementById('content');if(!cls.length){a.innerHTML='<div class="empty-state"><div class="empty-state-icon"><svg width="28" height="28" fill="none" stroke="#cbd5e1" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg></div><p>No divisions found</p></div>';return;}
+a.innerHTML='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">'+cls.map((cl,i)=>{const c=gc(i);return'<div class="s-card fade-up" onclick="goSt('+cl.st_class_id+',\''+encodeURIComponent(cl.st_class_name)+'\')" style="border-left-color:'+c.border+';animation-delay:'+i*60+'ms"><div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px"><div class="icon-box" style="background:'+c.bg+';color:'+c.text+'">'+(cl.st_class_code||'D')+'</div><span class="cnt-badge" style="background:'+c.bg+';color:'+c.text+'">'+cl.cnt.toLocaleString()+' students</span></div><div style="font-size:15px;font-weight:600;color:#0f172a;margin-bottom:4px">'+cl.st_class_name+'</div><div style="font-size:12px;color:#94a3b8;display:flex;align-items:center;gap:4px">View students <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></div></div>';}).join('')+'</div>';}
 function goSt(cid,cn){const ay=document.getElementById('fAY').value;const sc=document.getElementById('fSch').selectedOptions[0]?.text||'';const pr=document.getElementById('fPr').selectedOptions[0]?.text||'';const co=document.getElementById('fCo').selectedOptions[0]?.text||'';window.location.href='/students?class_id='+cid+'&class_name='+cn+'&school='+encodeURIComponent(sc)+'&program='+encodeURIComponent(pr)+'&cohort='+encodeURIComponent(co)+'&academic_year_id='+ay;}
 function goDv(){const v=document.getElementById('fDv').value;if(v)goSt(v,encodeURIComponent(document.getElementById('fDv').selectedOptions[0]?.text||''));}
 init();

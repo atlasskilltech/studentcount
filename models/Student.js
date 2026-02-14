@@ -390,6 +390,56 @@ class Student {
     }
   }
 
+  // Search students globally by name, email, roll number, enrollment number, or mobile
+  static async searchStudents(searchTerm, academicYearId, limit = 50) {
+    try {
+      const likeTerm = `%${searchTerm}%`;
+      const [rows] = await db.query(
+        `SELECT
+          student_id,
+          CONCAT(dice_students.student_first_name, ' ', dice_students.student_last_name) AS student_name,
+          student_email,
+          dice_students.student_roll_id AS student_roll_number,
+          dice_students.student_app_id AS student_enrollment_number,
+          student_mobile,
+          dice_class.class_name AS st_class_name,
+          dice_class.class_id AS st_class_id,
+          cluster_name,
+          cluster_id,
+          dice_certification.certification_name AS program_name,
+          school_name,
+          school_id
+        FROM
+          dice_students
+        JOIN dice_student_class ON st_class_student_id = student_id
+        JOIN dice_class ON dice_class.class_id = dice_student_class.st_class_id
+        JOIN dice_cluster ON dice_student_class.st_class_cluster_id = dice_cluster.cluster_id
+        JOIN dice_certification ON dice_cluster.cluster_certification = dice_certification.certification_id
+        JOIN dice_school ON school_id = cluster_school
+        WHERE
+          student_active = 0
+          AND st_class_type = 1
+          AND st_class_active = 0
+          AND cluster_active = 0
+          AND cluster_school IN (7,8,11,13,16)
+          AND student_academic_year_id = ?
+          AND (
+            CONCAT(dice_students.student_first_name, ' ', dice_students.student_last_name) LIKE ?
+            OR student_email LIKE ?
+            OR dice_students.student_roll_id LIKE ?
+            OR dice_students.student_app_id LIKE ?
+            OR student_mobile LIKE ?
+          )
+        ORDER BY dice_students.student_first_name, dice_students.student_last_name
+        LIMIT ?`,
+        [academicYearId, likeTerm, likeTerm, likeTerm, likeTerm, likeTerm, limit]
+      );
+      return rows;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // Get all programs (abbreviations) for filter
   static async getAllPrograms() {
     try {
