@@ -24,10 +24,10 @@ jobs:
           chmod 600 ~/.ssh/key.pem
 
           ssh -i ~/.ssh/key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
-          cd /home/ubuntu/student-count
+          cd /home/ubuntu/studentcount
           git pull origin main
-          npm install --production
-          pm2 restart student-count || pm2 start server.js --name student-count
+          npm install
+          pm2 restart student-count || pm2 start server.js --name studentcount
           pm2 save
           EOF
 
