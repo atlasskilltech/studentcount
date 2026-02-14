@@ -43,10 +43,6 @@
     <span style="font-size:13px;color:#475569;font-weight:500" id="resultsInfo">Type to start searching</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
-    <button onclick="expCSV()" id="expBtn" style="display:none;padding:8px 16px;font-size:11px;font-weight:600;background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:none;border-radius:8px;cursor:pointer;align-items:center;gap:5px;box-shadow:0 2px 6px rgba(16,185,129,.2)">
-      <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="vertical-align:-2px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-      Export CSV
-    </button>
   </div>
 </div>
 
@@ -135,7 +131,6 @@ document.getElementById('searchInput').addEventListener('input', function () {
   if (q.length < 2) {
     showState('initial');
     document.getElementById('resultsInfo').textContent = 'Type to start searching';
-    document.getElementById('expBtn').style.display = 'none';
     searchResults = [];
     return;
   }
@@ -162,12 +157,10 @@ async function doSearch(q) {
       document.getElementById('noResultsText').textContent = 'No results for "' + q + '"';
       showState('noResults');
       document.getElementById('resultsInfo').textContent = '0 results';
-      document.getElementById('expBtn').style.display = 'none';
-    } else {
+      } else {
       renderResults(searchResults, q);
       showState('results');
       document.getElementById('resultsInfo').innerHTML = '<span class="status-badge active" style="font-size:10px">' + searchResults.length + ' student(s) found</span>';
-      document.getElementById('expBtn').style.display = 'inline-flex';
     }
   } catch (e) {
     document.getElementById('noResultsText').textContent = 'Error: ' + e.message;
@@ -217,19 +210,6 @@ function clearSearch() {
   document.getElementById('searchInput').focus();
 }
 
-function expCSV() {
-  if (!searchResults.length) return;
-  const h = ['#', 'Roll No', 'Enrollment', 'Name', 'Email', 'Mobile', 'Division', 'Program', 'School'];
-  const rows = searchResults.map((s, i) => [i + 1, s.student_roll_number || '', s.student_enrollment_number || '', s.student_name, s.student_email || '', s.student_mobile || '', s.st_class_name || '', s.program_name || '', s.school_name || '']);
-  const csv = [h, ...rows].map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n');
-  const b = new Blob([csv], { type: 'text/csv' });
-  const u = URL.createObjectURL(b);
-  const a = document.createElement('a');
-  a.href = u;
-  a.download = 'search_results.csv';
-  a.click();
-  URL.revokeObjectURL(u);
-}
 
 init();
 </script>
