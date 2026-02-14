@@ -27,7 +27,7 @@ jobs:
           cd /home/ubuntu/studentcount
           git pull origin main
           npm install
-          pm2 restart student-count || pm2 start server.js --name studentcount
+          pm2 reload student-count || pm2 start server.js --name studentcount
           pm2 save
           EOF
 
