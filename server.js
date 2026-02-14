@@ -17,6 +17,7 @@ app.use('/api', require('./routes/api'));
 app.get('/', (req, res) => res.render('dashboard'));
 app.get('/divisions', (req, res) => res.render('divisions'));
 app.get('/students', (req, res) => res.render('students'));
+app.get('/search', (req, res) => res.render('search'));
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

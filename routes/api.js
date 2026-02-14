@@ -93,6 +93,23 @@ router.get('/students/:classId', async (req, res) => {
   }
 });
 
+// Search students globally
+router.get('/search/students', async (req, res) => {
+  try {
+    const { q, academic_year_id, limit } = req.query;
+    if (!q || q.trim().length < 2) {
+      return res.json({ success: true, data: [] });
+    }
+    const academicYearId = academic_year_id || 9;
+    const maxResults = Math.min(parseInt(limit) || 50, 100);
+    const students = await Student.searchStudents(q.trim(), academicYearId, maxResults);
+    res.json({ success: true, data: students });
+  } catch (error) {
+    console.error('Search error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // ── Filter endpoints ──
 
 router.get('/filters/academic-years', async (req, res) => {
